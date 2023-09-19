@@ -2,7 +2,7 @@ import cv2
 import numpy as np 
 import matplotlib.pyplot as plt 
 
-image_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/testImg1.JPG"
+image_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/testImg1.JPG"
 output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/afterProcessing.jpg"
 face_x = 0 
 face_y = 0 
@@ -95,4 +95,4 @@ cv2.imwrite('normalized_image.jpg', scaled_image)
  
                     # IMAGE BLURRING 
 
-blurred_image = cv2.GaussianBlur(resized_cropped_image,)
+#blurred_image = cv2.GaussianBlur(resized_cropped_image,)
