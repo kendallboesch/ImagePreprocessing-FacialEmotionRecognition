@@ -73,8 +73,21 @@ def resize_image(img_path_in, img_path_out, scale_factor) :
 
     # return path to cropped image 
     return img_path_out 
+ 
+def normalize_pixels(img_path_in) :
+    # read image 
+    img = cv2.imread(img_path_in)
     
+    # convert image to float32 for precise calculations
+    img_float = img.astype(np.float32)
     
+    # normalize pixel values to range [0, 1] 
+    img_normalized = img_float/255.0
+    
+    # return normalized np array of pizels
+    return img_normalized
+
+
     
      
     
