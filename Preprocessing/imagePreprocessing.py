@@ -92,6 +92,8 @@ scaled_image = (normalized_image * 255).astype(np.uint8)
 
 #save normalized image 
 cv2.imwrite('normalized_image.jpg', scaled_image)
+
+cv2.imshow('Final', scaled_image)
  
                     # IMAGE BLURRING 
 

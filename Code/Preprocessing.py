@@ -120,15 +120,50 @@ def simple_thresholding(img_path):
         plt.subplot(2,3,i+1),plt.imshow(images[i],'gray',vmin=0,vmax=255)
         plt.title(titles[i])
         plt.xticks([]),plt.yticks([])
+    print("Close the window, then press any key to close the window")
     plt.show()
+    
+  
+    plt.waitforbuttonpress()
+    
+    plt.close()
     
     # return array of thresholded images 
     return images
 def adaptive_thresholding(img_path) : 
     # Read in image from file path 
-    
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     
+    # Make sure image exists 
+    assert img is not None, "file could not be read, check with os.path.exists()"
+    
+    # Apply Gaussian blur 
+    img_blurred = cv2.GaussianBlur(img, (5, 5), 0)
+    
+    # Apply adaptive thresholding & save images
+        # (a) Adaptive mean thresholding 
+    th1 = cv2.adaptiveThreshold(img_blurred, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
+    cv2.imwrite("./Images/aThresh_mean.jpg", th1)
+        # (b) Adaptive Gaussian thresholding 
+    th2 = cv2.adaptiveThreshold(img_blurred, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+    cv2.imwrite("./Images/aThresh_Gaussian.jpg", th2)
+    
+    # Assign titles for image show
+    titles = ['Original Image', 'Blurred Image', 'Adaptive Mean Thresholding', 'Adaptive Gaussian Thresholding']
+    # Create array of images
+    images = [img, img_blurred, th1, th2]
+    
+    # Use matplotlib.pyplot library to display images 
+    for i in range(4) :
+        plt.subplot(2,2,i+1), plt.imshow(images[i], 'gray')
+        plt.title(titles[i])
+        plt.xticks([])
+        plt.yticks([])
+    plt.show()
+
+    
+    # Return image array
+    return images
 
     
     
@@ -142,9 +177,11 @@ img_resized = resize_image(img_cropped, output_path, 3.0)
 
 simple_thresholding(img_resized)
 
-plt.imshow(img_resized)
-plt.title("Post Processing")
-plt.show()
+adaptive_thresholding(img_resized)
+
+# plt.imshow(img_resized)
+# plt.title("Post Processing")
+# plt.show()
     
 
     
