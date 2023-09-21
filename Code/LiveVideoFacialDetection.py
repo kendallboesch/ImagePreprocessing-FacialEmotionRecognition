@@ -19,6 +19,9 @@ def stop_timer(t_start) :
     
     return t_elapsed
 
+def get_elapsed(t_start) :
+    return time.time() - t_start
+
 cv2_base_dir = os.path.dirname(os.path.abspath(cv2.__file__))
 haar_model = os.path.join(cv2_base_dir, 'data/haarcascade_frontalface_default.xml')
 
@@ -30,7 +33,9 @@ video_capture = cv2.VideoCapture(0)
 
 #start timer 
 t_start = start_timer()
-
+t_interval_start = t_start
+# variable to keep track of frame number
+frameNum = 0
 # Loop until the user presses 'q' to quit
 while True:
     
@@ -50,6 +55,12 @@ while True:
 
     # Display the resulting frame with the face detection
     cv2.imshow('Video', frame)
+    
+    if get_elapsed(t_interval_start) > 5 :
+        print(f"Writing frame #: {frameNum}\n")
+        cv2.imwrite(f'./LiveFeedFrames/{frameNum}.jpg', frame)
+        frameNum+=1
+        t_interval_start = start_timer()
 
     # Check if the user presses 'q' to quit
     if cv2.waitKey(1) & 0xFF == ord('q'):
