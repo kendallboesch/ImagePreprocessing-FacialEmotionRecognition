@@ -58,7 +58,7 @@ def crop_to_face(img_path_in) :
     
     # return path to cropped image 
     #return cropped_image
-    return "cropped1.jpg"
+    return "./Images/cropped1.jpg"
 def resize_image(img_path_in, img_path_out, scale_factor) :
     # image read 
     img = cv2.imread(img_path_in)
@@ -122,7 +122,6 @@ def simple_thresholding(img_path):
         plt.xticks([]),plt.yticks([])
     print("Close the window, then press any key to close the window")
     plt.show()
-    
   
     plt.waitforbuttonpress()
     
@@ -175,9 +174,9 @@ img_cropped = crop_to_face(input_path)
 
 img_resized = resize_image(img_cropped, output_path, 3.0)
 
-simple_thresholding(img_resized)
+#simple_thresholding(img_resized)
 
-adaptive_thresholding(img_resized)
+#adaptive_thresholding(img_resized)
 
 # plt.imshow(img_resized)
 # plt.title("Post Processing")
