@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 input_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/testImg1.JPG"
-output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/afterProcessing.jpg"
+output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing.jpg"
 
 face_x, face_y, face_w, face_h = 0, 0, 0, 0
 
@@ -54,7 +54,7 @@ def crop_to_face(img_path_in) :
     cropped_image = img[y1:y2, x1:x2]
     
     # save cropped image 
-    cv2.imwrite("cropped1.jpg", cropped_image)
+    cv2.imwrite("./Images/cropped1.jpg", cropped_image)
     
     # return path to cropped image 
     #return cropped_image
