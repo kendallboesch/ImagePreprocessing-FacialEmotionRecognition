@@ -74,7 +74,7 @@ def resize_image(img_path_in, img_path_out, scale_factor) :
     cv2.imwrite(img_path_out, resized_image)
 
     # return path to resized image 
-    return resized_image 
+    return img_path_out 
 def normalize_pixels(img_path_in) :
     # read image 
     img = cv2.imread(img_path_in)
@@ -87,7 +87,51 @@ def normalize_pixels(img_path_in) :
     
     # return normalized np array of pizels
     return img_normalized
+def simple_thresholding(img_path): 
+    #read image
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    
+    #ensure image exists 
+    assert img is not None, "file could not be read, check with os.path.exists()"
+    
+    # generate thresholded images & save
+        # (a) Binary
+    ret,thresh1 = cv2.threshold(img,127,255,cv2.THRESH_BINARY)
+    cv2.imwrite("./Images/thresh_bianry.jpg", thresh1)
+        # (b) Binary inverted 
+    ret,thresh2 = cv2.threshold(img,127,255,cv2.THRESH_BINARY_INV)
+    cv2.imwrite("./Images/thresh_binary_inverted.jpg", thresh2)
+        # (c) Truncate
+    ret,thresh3 = cv2.threshold(img,127,255,cv2.THRESH_TRUNC)
+    cv2.imwrite("./Images/thresh_truncate.jpg", thresh3)
+        # (d) To zero
+    ret,thresh4 = cv2.threshold(img,127,255,cv2.THRESH_TOZERO)
+    cv2.imwrite("./Images/thresh_zero.jpg", thresh4)
+        # (e) To zero, inverted
+    ret,thresh5 = cv2.threshold(img,127,255,cv2.THRESH_TOZERO_INV)
+    cv2.imwrite("./Images/thresh_zero_inverted.jpg", thresh5)
+    
+    # Assign titles for image show 
+    titles = ['Original Image','BINARY','BINARY_INV','TRUNC','TOZERO','TOZERO_INV']
+    images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
 
+    # Use matplotlib.pyplot library to display all thresholded images
+    for i in range(6):
+        plt.subplot(2,3,i+1),plt.imshow(images[i],'gray',vmin=0,vmax=255)
+        plt.title(titles[i])
+        plt.xticks([]),plt.yticks([])
+    plt.show()
+    
+    # return array of thresholded images 
+    return images
+def adaptive_thresholding(img_path) : 
+    # Read in image from file path 
+    
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    
+
+    
+    
 locate_face(input_path)
 # print(f" X: {face_x} \t Y: {face_y} \t H: {face_h} \t W: {face_w}")
 
@@ -95,6 +139,8 @@ img_cropped = crop_to_face(input_path)
 
 
 img_resized = resize_image(img_cropped, output_path, 3.0)
+
+simple_thresholding(img_resized)
 
 plt.imshow(img_resized)
 plt.title("Post Processing")
