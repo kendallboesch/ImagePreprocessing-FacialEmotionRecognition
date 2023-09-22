@@ -202,7 +202,26 @@ def blur_image(img_path) :
     cv2.imwrite('./Images/img_blurred.jpg', img_blurred)
     
     return './Images/img_blurred.jpg'
+def hist_equalization(img_path):
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     
+    assert img is not None, "File could not be read, check with os.path.exists()"
+    
+    hist,bins = np.histogram(img.flatten(), 256,[0,256])
+    cdf = hist.cumsum()
+    cdf_normalized = cdf * float(hist.max())
+    
+    plt.plot(cdf_normalized, color = 'b')
+    plt.hist(img.flatten(), 256,[0,256], color = 'r')
+    plt.xlim([0,256])
+    plt.legend(('cdf','histogram'), loc = 'upper left')
+    plt.show()
+    
+    plt.waitforbuttonpress()
+    plt.close()
+    
+    cv2.imwrite('./Images/img_equalized2.jpg', cdf_normalized)
+    return './Images/img_equalized2.jpg'
     
     
         
@@ -220,6 +239,8 @@ path_img_resized = resize_image(path_img_cropped, output_path, 3.0)
 path_img_blurred = blur_image(path_img_resized)
 
 path_img_equalized = histogram_equalization(path_img_blurred)
+
+path_img_equalized2 = hist_equalization(path_img_blurred)
 
 img = cv2.imread(input_path)
 img_cropped = cv2.imread(path_img_cropped)
