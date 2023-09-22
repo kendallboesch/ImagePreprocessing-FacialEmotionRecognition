@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-input_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/testImg1.JPG"
+#input_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/testImg1.JPG"
+input_path ='/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/0.jpg'
 output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing.jpg"
 
 face_x, face_y, face_w, face_h = 0, 0, 0, 0
@@ -163,27 +164,80 @@ def adaptive_thresholding(img_path) :
     
     # Return image array
     return images
+def histogram_equalization(img_path) :
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    img_equalized = cv2.equalizeHist(img)
+    titles =['Original Image', 'Equalized Image']
+    images = [img, img_equalized] 
+    
+    # for i in range(2) :
+    #     plt.subplot(2,2,i+1), plt.imshow(images[i], 'gray')
+    #     plt.title(titles[i])
+    #     plt.xticks([])
+    #     plt.yticks([])
+    # print("Close the window, then press any key to continue")
+    # plt.show(); 
+    # plt.waitforbuttonpress()
+    # plt.close()
+    
+    cv2.imwrite('./Images/img_equalized.jpg', img_equalized)
+    return './Images/img_equalized.jpg'
+def blur_image(img_path) :
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    img_blurred = cv2.GaussianBlur(img, (5,5), 0)
+    
+    titles=['Original Image', 'Blurred Image']
+    images=[img, img_blurred] 
+    
+    # for i in range(2): 
+    #     plt.subplot(2,2,i+1)
+    #     plt.imshow(images[i],'gray')
+    #     plt.title(titles[i])
+    #     plt.xticks([])
+    #     plt.yticks([])
+    # print("Close the window, then press any key to proceed")
+    # plt.show()
+    # plt.waitforbuttonpress()
+    
+    cv2.imwrite('./Images/img_blurred.jpg', img_blurred)
+    
+    return './Images/img_blurred.jpg'
+    
+    
+    
+        
 
     
     
 locate_face(input_path)
 # print(f" X: {face_x} \t Y: {face_y} \t H: {face_h} \t W: {face_w}")
 
-img_cropped = crop_to_face(input_path)
+path_img_cropped = crop_to_face(input_path)
 
 
-img_resized = resize_image(img_cropped, output_path, 3.0)
+path_img_resized = resize_image(path_img_cropped, output_path, 3.0)
 
-#simple_thresholding(img_resized)
+path_img_blurred = blur_image(path_img_resized)
 
-#adaptive_thresholding(img_resized)
+path_img_equalized = histogram_equalization(path_img_blurred)
 
-# plt.imshow(img_resized)
-# plt.title("Post Processing")
-# plt.show()
-    
+img = cv2.imread(input_path)
+img_cropped = cv2.imread(path_img_cropped)
+img_resized = cv2.imread(path_img_resized)
+img_blurred = cv2.imread(path_img_blurred)
+img_equalized = cv2.imread(path_img_equalized) 
 
-    
+titles =['Original Image', 'Cropped Image', 'Resized Image', 'Blurred Image', 'Equalized Image']
+images=[img, img_cropped, img_resized, img_blurred, img_equalized] 
+
+for x in range(5): 
+    plt.subplot(2,3,x+1)
+    plt.imshow(images[x], cmap='gray')
+    plt.title(titles[x])
+    plt.xticks([])
+    plt.yticks([])
+plt.show()
+        
      
     
         
