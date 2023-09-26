@@ -80,16 +80,6 @@ def blur_image(input_path, output_path) :
     # Return path to blurred image 
     return output_path
 
-def histogram_equalization1(input_path, output_path) :  
-    # Read the image in grayscale 
-    img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
-    hist,bins = np.histogram(img.flatten(), 256,[0,256])
-    cdf = hist.cumsum()
-    cdf_normalized = cdf * float(hist.max())
-    cdf_m = np.ma.masked_equal(cdf, 0)
-    cdf_m = (cdf_m - cdf_m.min()) * 225 / (cdf_m.max()-cdf_m.min())
-    cdf = np.ma.filled(cdf_m,0).astype('uint8')
-
 def numpy_equalization(input_path, output_path) :
     
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
