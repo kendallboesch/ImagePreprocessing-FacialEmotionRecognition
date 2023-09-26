@@ -3,7 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #input_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/testImg1.JPG"
-input_path ='/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/0.jpg'
+#input_path ='/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/0.jpg'
+input_path = '/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/1.jpg'
 output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing.jpg"
 
 face_x, face_y, face_w, face_h = 0, 0, 0, 0
@@ -41,6 +42,23 @@ def locate_face(image_path) :
         
     # Print facial dimensions
     print(f"Face dimensions: \n\tX start: {face_x} \n\tY start: {face_y} \n\tHeight: {face_h} \n\tWidth: {face_w}") 
+    
+    # Calculate dimensions 
+    x1 = face_x 
+    x2 = face_x + face_w
+    y1 = face_y 
+    y2 = face_y + face_h
+    
+    # crop image 
+    cropped_image = img[y1:y2, x1:x2]
+    
+      # save cropped image 
+    cv2.imwrite("./Images/cropped1.jpg", cropped_image)
+    
+    # return path to cropped image 
+    #return cropped_image
+    return "./Images/cropped1.jpg"
+    
 def crop_to_face(img_path_in) :
     # image read 
     img = cv2.imread(img_path_in)
@@ -211,11 +229,11 @@ def hist_equalization(img_path):
     cdf = hist.cumsum()
     cdf_normalized = cdf * float(hist.max())
     
-    plt.plot(cdf_normalized, color = 'b')
-    plt.hist(img.flatten(), 256,[0,256], color = 'r')
-    plt.xlim([0,256])
-    plt.legend(('cdf','histogram'), loc = 'upper left')
-    plt.show()
+    # plt.plot(cdf_normalized, color = 'b')
+    # plt.hist(img.flatten(), 256,[0,256], color = 'r')
+    # plt.xlim([0,256])
+    # plt.legend(('cdf','histogram'), loc = 'upper left')
+    # plt.show()
     
     cdf_m = np.ma.masked_equal(cdf, 0)
     cdf_m = (cdf_m - cdf_m.min()) * 225 / (cdf_m.max()-cdf_m.min())
@@ -235,10 +253,10 @@ def hist_equalization2(img_path) :
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     assert img is not None, "file could not be read, check with os.path.exists()"
     equ = cv2.equalizeHist(img)
-    img_eq = np.hstack((img,equ))
-    cv2.imwrite('./Images/equ_res.jpg', img_eq)
-    plt.imshow(img_eq)
-    plt.show()
+   # img_eq = np.hstack((img,equ))
+    cv2.imwrite('./Images/equ_res.jpg', equ)
+    # plt.imshow(equ)
+    # plt.show()
     return './Images/equ_res.jpg'    
     
         
