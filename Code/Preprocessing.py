@@ -217,12 +217,29 @@ def hist_equalization(img_path):
     plt.legend(('cdf','histogram'), loc = 'upper left')
     plt.show()
     
-    plt.waitforbuttonpress()
-    plt.close()
+    cdf_m = np.ma.masked_equal(cdf, 0)
+    cdf_m = (cdf_m - cdf_m.min()) * 225 / (cdf_m.max()-cdf_m.min())
     
-    cv2.imwrite('./Images/img_equalized2.jpg', cdf_normalized)
-    return './Images/img_equalized2.jpg'
+    cdf = np.ma.filled(cdf_m,0).astype('uint8')
     
+    img2 = cdf[img]
+    plt.imshow(img2)
+    plt.show()
+    return img2    
+    # plt.waitforbuttonpress()
+    # plt.close()
+    
+    # cv2.imwrite('./Images/img_equalized2.jpg', cdf_normalized)
+    # return './Images/img_equalized2.jpg'
+def hist_equalization2(img_path) : 
+    img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+    assert img is not None, "file could not be read, check with os.path.exists()"
+    equ = cv2.equalizeHist(img)
+    img_eq = np.hstack((img,equ))
+    cv2.imwrite('./Images/equ_res.jpg', img_eq)
+    plt.imshow(img_eq)
+    plt.show()
+    return './Images/equ_res.jpg'    
     
         
 
@@ -242,16 +259,19 @@ path_img_equalized = histogram_equalization(path_img_blurred)
 
 path_img_equalized2 = hist_equalization(path_img_blurred)
 
+path_img_equalized3 = hist_equalization2(path_img_blurred)
+
 img = cv2.imread(input_path)
 img_cropped = cv2.imread(path_img_cropped)
 img_resized = cv2.imread(path_img_resized)
 img_blurred = cv2.imread(path_img_blurred)
 img_equalized = cv2.imread(path_img_equalized) 
+img_equ2 = cv2.imread(path_img_equalized3)
 
-titles =['Original Image', 'Cropped Image', 'Resized Image', 'Blurred Image', 'Equalized Image']
-images=[img, img_cropped, img_resized, img_blurred, img_equalized] 
+titles =['Original Image', 'Cropped Image', 'Resized Image', 'Blurred Image', 'Equalized Image', 'Other Equalized Image']
+images=[img, img_cropped, img_resized, img_blurred, img_equalized, img_equ2] 
 
-for x in range(5): 
+for x in range(6): 
     plt.subplot(2,3,x+1)
     plt.imshow(images[x], cmap='gray')
     plt.title(titles[x])
