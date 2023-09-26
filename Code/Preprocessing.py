@@ -185,19 +185,6 @@ def adaptive_thresholding(img_path) :
 def histogram_equalization(img_path) :
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     img_equalized = cv2.equalizeHist(img)
-    titles =['Original Image', 'Equalized Image']
-    images = [img, img_equalized] 
-    
-    # for i in range(2) :
-    #     plt.subplot(2,2,i+1), plt.imshow(images[i], 'gray')
-    #     plt.title(titles[i])
-    #     plt.xticks([])
-    #     plt.yticks([])
-    # print("Close the window, then press any key to continue")
-    # plt.show(); 
-    # plt.waitforbuttonpress()
-    # plt.close()
-    
     cv2.imwrite('./Images/img_equalized.jpg', img_equalized)
     return './Images/img_equalized.jpg'
 def blur_image(img_path) :
@@ -228,26 +215,14 @@ def hist_equalization(img_path):
     hist,bins = np.histogram(img.flatten(), 256,[0,256])
     cdf = hist.cumsum()
     cdf_normalized = cdf * float(hist.max())
-    
-    # plt.plot(cdf_normalized, color = 'b')
-    # plt.hist(img.flatten(), 256,[0,256], color = 'r')
-    # plt.xlim([0,256])
-    # plt.legend(('cdf','histogram'), loc = 'upper left')
-    # plt.show()
-    
     cdf_m = np.ma.masked_equal(cdf, 0)
     cdf_m = (cdf_m - cdf_m.min()) * 225 / (cdf_m.max()-cdf_m.min())
-    
     cdf = np.ma.filled(cdf_m,0).astype('uint8')
-    
     img2 = cdf[img]
-    plt.imshow(img2)
-    plt.show()
-    return img2    
-    # plt.waitforbuttonpress()
-    # plt.close()
     
-    # cv2.imwrite('./Images/img_equalized2.jpg', cdf_normalized)
+    cv2.imwrite('./Images/img_equalized2.jpg', img2)
+    
+    return './Images/img_equalized2.jpg'
     # return './Images/img_equalized2.jpg'
 def hist_equalization2(img_path) : 
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
@@ -271,32 +246,44 @@ path_img_cropped = crop_to_face(input_path)
 
 path_img_resized = resize_image(path_img_cropped, output_path, 3.0)
 
-path_img_blurred = blur_image(path_img_resized)
+# path_img_blurred = blur_image(path_img_resized)
 
-path_img_equalized = histogram_equalization(path_img_blurred)
+# path_img_equalized = histogram_equalization(path_img_blurred)
 
-path_img_equalized2 = hist_equalization(path_img_blurred)
+# path_img_equalized2 = hist_equalization2(path_img_blurred)
 
-path_img_equalized3 = hist_equalization2(path_img_blurred)
+# path_img_equalized3 = hist_equalization(path_img_blurred)
 
-img = cv2.imread(input_path)
-img_cropped = cv2.imread(path_img_cropped)
-img_resized = cv2.imread(path_img_resized)
-img_blurred = cv2.imread(path_img_blurred)
-img_equalized = cv2.imread(path_img_equalized) 
-img_equ2 = cv2.imread(path_img_equalized3)
+# img = cv2.imread(input_path)
+# img_cropped = cv2.imread(path_img_cropped)
+# img_resized = cv2.imread(path_img_resized)
+# img_blurred = cv2.imread(path_img_blurred)
 
-titles =['Original Image', 'Cropped Image', 'Resized Image', 'Blurred Image', 'Equalized Image', 'Other Equalized Image']
-images=[img, img_cropped, img_resized, img_blurred, img_equalized, img_equ2] 
+# img_equalized = cv2.imread(path_img_equalized) 
+# img_equ2 = cv2.imread(path_img_equalized2)
+# img_equ3 =cv2.imread(path_img_equalized3)
 
-for x in range(6): 
-    plt.subplot(2,3,x+1)
-    plt.imshow(images[x], cmap='gray')
-    plt.title(titles[x])
-    plt.xticks([])
-    plt.yticks([])
-plt.show()
-        
+# # titles =['Original Image', 'Cropped Image', 'Resized Image', 'Blurred Image', 'Equalized Image', 'Other Equalized Image']
+# # images=[img, img_cropped, img_resized, img_blurred, img_equalized, img_equ2] 
+
+# # for x in range(6): 
+# #     plt.subplot(2,3,x+1)
+# #     plt.imshow(images[x], cmap='gray')
+# #     plt.title(titles[x])
+# #     plt.xticks([])
+# #     plt.yticks([])
+# # plt.show()
+
+# titles = ['Eq1' , 'Eq2', 'Eq3']
+# images = [img_equalized, img_equ2, img_equ3]
+
+# for x in range(3) :
+#     plt.subplot(1,3,x+1)
+#     plt.imshow(images[x], cmap='gray')
+#     plt.title(titles[x])
+#     plt.xticks([])
+#     plt.yticks([])
+# plt.show()
      
     
         
