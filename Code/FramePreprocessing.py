@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 
 face_x, face_y, face_w, face_h = 0, 0, 0, 0
 input_path = '/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/1.jpg'
-output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing.jpg"
+output_path = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing1.jpg"
+output_path2 = "/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/Images/afterProcessing2.jpg"
 
 
 def crop_to_face(input_path, output_path):
@@ -83,9 +84,6 @@ def blur_image(input_path, output_path) :
 def numpy_equalization(input_path, output_path) :
     
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
-    
-        # Convert to gray scale 
-   # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     assert img is not None, "file could not be read, check with os.path.exists()"
     hist,bins = np.histogram(img.flatten(),256,[0,256])
     cdf = hist.cumsum()
@@ -95,11 +93,34 @@ def numpy_equalization(input_path, output_path) :
     
     img2 = cdf[img]
     
-    plt.imshow(img2, cmap ='gray')
-    plt.show()
+    cv2.imwrite(output_path, img2)
+    
+    return output_path
 
+def opencv_equalization(input_path, output_path) :
+    img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE)
+    img_equ = cv2.equalizeHist(img)
+    cv2.imwrite(output_path, img_equ)
+    return output_path
   
 img_path = crop_to_face(input_path, output_path)  
 img_path = resize_image(img_path, output_path, 3.0)
 img_path = blur_image(img_path, output_path)
-numpy_equalization(img_path, output_path)
+
+img_np_equ_path = numpy_equalization(img_path, output_path)
+img_cv_equ_path = opencv_equalization(img_path, output_path2)
+
+img_npequ = cv2.imread(img_np_equ_path, cv2.IMREAD_GRAYSCALE)
+img_cvequ = cv2.imread(img_cv_equ_path, cv2.IMREAD_GRAYSCALE)
+
+titles = ['Numpy Histogram Equalization', 'OpenCV Histogram Equalozation']
+images = [img_npequ, img_cvequ]
+
+for x in range(2): 
+    plt.subplot(1, 2, x + 1)
+    plt.imshow(images[x], cmap='gray')
+    plt.title(titles[x])
+    plt.xticks([])
+    plt.yticks([])
+plt.show()
+

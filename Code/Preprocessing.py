@@ -224,6 +224,7 @@ def hist_equalization(img_path):
     
     return './Images/img_equalized2.jpg'
     # return './Images/img_equalized2.jpg'
+    
 def hist_equalization2(img_path) : 
     img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
     assert img is not None, "file could not be read, check with os.path.exists()"
