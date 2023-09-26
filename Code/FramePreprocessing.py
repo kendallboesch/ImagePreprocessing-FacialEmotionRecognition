@@ -28,6 +28,9 @@ def crop_to_face(input_path, output_path):
     img_cropped = img[y1:y2, x1:x2]
     
     # Save the cropped image
+    cv2.imwrite(output_path, img_cropped)
     
+    # Return the path to the newly cropped image 
+    return output_path
         
     
