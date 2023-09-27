@@ -171,7 +171,7 @@ def process_images(input_file, user):
     print("EOF")
 
     
-process_images('/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/outputFiles/0testImagePaths.txt', '0test')
+#process_images('/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/outputFiles/0testImagePaths.txt', '0test')
 # img_path = crop_to_face(input_path, output_path)  
 # img_path = resize_image(img_path, output_path, 3.0)
 # img_path = blur_image(img_path, output_path)

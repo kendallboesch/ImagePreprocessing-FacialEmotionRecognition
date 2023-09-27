@@ -1,11 +1,10 @@
-# WRITTEN BY SAFWAN 
 # Import the required modules
 
 import cv2
 import sys
 import os
 
-from FramePreprocessing import crop_to_face, resize_image, blur_image, numpy_equalization, opencv_equalization
+from FramePreprocessing import process_images
 
 user = input('Enter name of person\t')
     
@@ -44,7 +43,8 @@ while True:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
         print(f"Writing frame #: {frameNum}\n")
         cv2.imwrite(f'./LiveFeedFrames/{user}{frameNum}.jpg', frame)
-        file.write(f'./LiveFeedFrames/{user}{frameNum}.jpg\n')
+        write_file = f'./LiveFeedFrames/{user}{frameNum}.jpg'
+        file.write(f'{write_file}\n')
 
     # Display the resulting frame with the face detection
     cv2.imshow('Video', frame)
@@ -61,3 +61,5 @@ while True:
 video_capture.release()
 
 cv2.destroyAllWindows()
+
+process_images(write_file, user)
