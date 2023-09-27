@@ -160,9 +160,9 @@ def process_images(input_file, user):
         
         # Preprocess Image
                 crop_to_face(path, img_out_path)
-                resize_image(path, img_out_path, 3.0)
-                blur_image(path, img_out_path)
-                numpy_equalization(path, img_out_path)
+                resize_image(img_out_path, img_out_path, 3.0)
+                blur_image(img_out_path, img_out_path)
+                numpy_equalization(img_out_path, img_out_path)
         
         # Write the path to the preprocessed image in the write file 
                 write_file.write(f'{img_out_path}\n')
