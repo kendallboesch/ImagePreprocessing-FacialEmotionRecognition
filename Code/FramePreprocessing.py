@@ -1,6 +1,7 @@
 import cv2 
 import numpy as np 
 import matplotlib.pyplot as plt
+import os
 
 face_x, face_y, face_w, face_h = 0, 0, 0, 0
 input_path = '/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/LiveFeedFrames/1.jpg'
@@ -12,6 +13,9 @@ def crop_to_face(input_path, output_path):
     
     # Read input image in grayscale 
     img = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE) 
+    print(f'IN CROP: {input_path}\n')
+    
+    assert img is not None, "file could not be read, check with os.path.exists()"
     
     # Load pretrained Haar Cascade Classifier 
     face_classifier = cv2.CascadeClassifier(
@@ -40,7 +44,14 @@ def crop_to_face(input_path, output_path):
         global face_w
         face_w = w
         
-    # Crop the image 
+        # Crop the image 
+    #img_cropped = img[y1:y2, x1:x2]
+    x1 = face_x 
+    x2 = x1+face_w
+    y1 = face_y 
+    y2 = y1+face_h
+    
+    print(f'{x1} {x2} {y1} {y2}')
     img_cropped = img[y1:y2, x1:x2]
     
     # Save the cropped image
@@ -102,25 +113,83 @@ def opencv_equalization(input_path, output_path) :
     img_equ = cv2.equalizeHist(img)
     cv2.imwrite(output_path, img_equ)
     return output_path
-  
-img_path = crop_to_face(input_path, output_path)  
-img_path = resize_image(img_path, output_path, 3.0)
-img_path = blur_image(img_path, output_path)
 
-img_np_equ_path = numpy_equalization(img_path, output_path)
-img_cv_equ_path = opencv_equalization(img_path, output_path2)
+def process_images(input_file, user):
+    # Open the file of image paths 
+    read_file = open(input_file, 'r')
+    # Open the file to write the preprocessed image paths to
+    write_file = open(f'./outputFiles/{user}ProcessedImagePaths.txt', "w")
+    
+    
+    count = 0; 
+    while True: 
+        
+        img_paths = read_file.readlines()
+        img_paths = [path.strip() for path in img_paths]
+        
+        for path in img_paths: 
+            if os.path.exists(path): 
+                
+                print(path)
+                print(path[16:])
+                print(path[:-5])
+                
+                o_path = path[17:]
+                o_path = o_path[:-4]
+                img_out_path = f'./ProcessedFeedFrames/{o_path}Preprocessed.jpg'
+                print(img_out_path)
+              
+                
+    #     # Read file line by line
+    #     lineIn = read_file.readline()
+        
+    #     # If reached end of file, break loop
+    #     if not lineIn: 
+    #         break 
+    #     if count > 1 :
+    #         break
+ 
+    #     # Set input image path 
+    #     img_path = [path.strip() for path in lineIn]
+    #     print(f'{img_path}')
+    #    # img_path = './LiveFeedFrames/0test6.jpg'
+        
+    #     # Set image output path --> saved to folder ProcessedFeedFrames
+    #     img_out_path = f'./ProcessedFeedFrames{lineIn[16:]}{lineIn[:-5]}PreProcessed.jpg'
+    #     print(img_out_path)
+        
+        # Preprocess Image
+                crop_to_face(path, img_out_path)
+                resize_image(path, img_out_path, 3.0)
+                blur_image(path, img_out_path)
+                numpy_equalization(path, img_out_path)
+        
+        # Write the path to the preprocessed image in the write file 
+                write_file.write(f'{img_out_path}\n')
+                count +=1
+        break
+    print("EOF")
 
-img_npequ = cv2.imread(img_np_equ_path, cv2.IMREAD_GRAYSCALE)
-img_cvequ = cv2.imread(img_cv_equ_path, cv2.IMREAD_GRAYSCALE)
+    
+process_images('/Users/kendallboesch/Desktop/CS5351-SeniorDesign/TestCQ/outputFiles/0testImagePaths.txt', '0test')
+# img_path = crop_to_face(input_path, output_path)  
+# img_path = resize_image(img_path, output_path, 3.0)
+# img_path = blur_image(img_path, output_path)
 
-titles = ['Numpy Histogram Equalization', 'OpenCV Histogram Equalozation']
-images = [img_npequ, img_cvequ]
+# img_np_equ_path = numpy_equalization(img_path, output_path)
+# img_cv_equ_path = opencv_equalization(img_path, output_path2)
 
-for x in range(2): 
-    plt.subplot(1, 2, x + 1)
-    plt.imshow(images[x], cmap='gray')
-    plt.title(titles[x])
-    plt.xticks([])
-    plt.yticks([])
-plt.show()
+# img_npequ = cv2.imread(img_np_equ_path, cv2.IMREAD_GRAYSCALE)
+# img_cvequ = cv2.imread(img_cv_equ_path, cv2.IMREAD_GRAYSCALE)
+
+# titles = ['Numpy Histogram Equalization', 'OpenCV Histogram Equalozation']
+# images = [img_npequ, img_cvequ]
+
+# for x in range(2): 
+#     plt.subplot(1, 2, x + 1)
+#     plt.imshow(images[x], cmap='gray')
+#     plt.title(titles[x])
+#     plt.xticks([])
+#     plt.yticks([])
+# plt.show()
 
