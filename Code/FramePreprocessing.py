@@ -116,6 +116,7 @@ def opencv_equalization(input_path, output_path) :
 
 def process_images(input_file, user):
     print("in process_images")
+    write_file = open(f'./outputFiles/{user}Processed.txt', "w")
     with open(input_file, 'r') as file: 
         for line in file: 
             path = line.strip()
@@ -139,7 +140,7 @@ def process_images(input_file, user):
             
         
         # # Write the path to the preprocessed image in the write file 
-            write_file = open(f'./outputFiles/{user}Processed.txt', "w")
+           
             write_file.write(f'{pp_path}\n')
         #         count +=1
         # break
